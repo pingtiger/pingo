@@ -13,6 +13,7 @@ import (
 const (
 	CloudWatchOkValue   = float64(2)
 	CloudWatchFailValue = float64(1)
+	CloudWatchNamespace = "pingo"
 )
 
 type Host struct {
@@ -53,7 +54,7 @@ func NewCloudWatchHandler(region string) Handler {
 			MetricName: host.Address(),
 			Value:      value,
 		}
-		_, err := c.PutMetricDataNamespace([]cloudwatch.MetricDatum{metric}, "pingo")
+		_, err := c.PutMetricDataNamespace([]cloudwatch.MetricDatum{metric}, CloudWatchNamespace)
 		return err
 	}
 }
