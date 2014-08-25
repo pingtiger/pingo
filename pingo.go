@@ -62,8 +62,11 @@ func NewCloudWatchHandler(region string) Handler {
 func Ping(host Host, timeout time.Duration, handlers []Handler) {
 	address := host.Address()
 	now := time.Now()
-	_, err := net.DialTimeout("tcp", address, timeout)
+	conn, err := net.DialTimeout("tcp", address, timeout)
 	ok := err == nil
+	if conn != nil {
+		conn.Close()
+	}
 	for _, handler := range handlers {
 		err := handler(host, ok, now)
 		if err != nil {
